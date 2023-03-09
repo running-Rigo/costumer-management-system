@@ -4,17 +4,18 @@ session_destroy();
 $_SESSION = array();
 include "structure.php";
 echo giveHead("Willkommen");
-echo giveHeader();
+echo giveHeader("index.php");
 ?>
-
-<div class="flex-col items-center flex w-1/3 w-fit bg-white py-20 rounded-lg ">
-    <h3 class="m-5 font-bold italic">Herzlich Willkommen!</h3>
-    <p class="mb-2">Was möchtest du tun?</p>
-    <div>
-        <a href="registration.php" class="rounded border-2 border-black px-4 py-2 bg-yellow-600">Neu registrieren</a>
-        <a href="login.php" class="rounded border-2 border-black px-4 py-2 bg-yellow-400">Anmeldung</a>
+<main class="flex flex-col justify-center items-center w-screen h-full">
+    <div class="flex-col items-center flex w-full md:w-1/3 w-fit bg-white py-20 rounded-lg mt-5">
+        <h3 class="m-5 font-bold italic">Herzlich Willkommen!</h3>
+        <p class="mb-2">Was möchtest du tun?</p>
+        <div class="flex flex-col lg:flex-row">
+            <a href="registration.php" class="rounded border-2 border-black m-2 px-4 py-2 bg-yellow-600">Neu registrieren</a>
+            <a href="login.php" class="rounded border-2 border-black m-2 px-4 py-2 bg-yellow-400">Anmeldung</a>
+        </div>
     </div>
-</div>
+</main>
 
 <?php
 echo giveFooter();

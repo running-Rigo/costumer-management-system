@@ -4,28 +4,12 @@ session_destroy();
 $_SESSION = array();
 include "structure.php";
 echo giveHead("Registration");
-echo giveHeader();
-
+echo giveHeader("index.php");
 $nameErr = $emailErr = $passwordErr = "";
-$name = $email = $password = "";
+$username = $email = $password = "";
+$hasRegistered = false;
 ?>
-<form class="flex flex-col" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
-    <label for="username">User-Name:</label>
-    <input type="text" name="username" id="username">
-    <label for="email">Email-Adresse: <span class="text-blue-900">* <?php echo $nameErr;?></span></label>
-    <input type="email" name="email" id="email">
-    <label for="password">Passwort:</label>
-    <input type="password" name="password" id="password">
-    <label for="confirmpassword">Bestätige das Passwort:</label>
-    <input type="password" name="confirmpassword" id="confirmpassword">
-    <button class="rounded border-2 border-black px-4 py-2 bg-yellow-600"type="submit" name="submit">Registrieren</button>
-</form>
-
-<a class="rounded border-2 border-black px-4 py-2 bg-yellow-400" href="login.php">Login</a>
-
-<?php
-echo giveFooter();
-?>
+<main class="flex flex-col justify-center items-center w-screen h-full">
 
 <?php
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -39,15 +23,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if ($db) {
 
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo 'Bitte eine gültige E-Mail-Adresse eingeben<br>';
+            echo '<p class="text-red-500 text-sm">* Bitte eine gültige E-Mail-Adresse eingeben</p>';
             $error = true;
         }
         if(strlen($password) == 0) {
-            echo 'Bitte ein Passwort angeben<br>';
+            echo '<p class="text-red-500 text-sm">* Bitte ein Passwort eingeben</p>';
             $error = true;
         }
         if($password != $password2) {
-            echo 'Die Passwörter müssen übereinstimmen<br>';
+            echo '<p class="text-red-500 text-sm">! Die Passwörter müssen übereinstimmen</p>';
             $error = true;
         }
 
@@ -57,7 +41,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $result = $statement->execute(array('email' => $email));
             $user = $statement->fetch();
             if($user !== false) {
-                echo 'Diese E-Mail-Adresse ist bereits vergeben<br>';
+                echo '<p class="text-red-500 text-sm">! Diese Email-Adresse ist bereits vergeben.</p>';
                 $error = true;
             }
         }
@@ -65,13 +49,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         //Keine Fehler, wir können den Nutzer registrieren
         if(!$error) {
             $passwort_hash = password_hash($password, PASSWORD_DEFAULT);
-
             $statement = $db->prepare("INSERT INTO users (email, password, name) VALUES (:email, :password, :username)");
             $result = $statement->execute(array('email' => $email, 'password' => $passwort_hash, 'username' => $username));
-            if($result) {
-                echo 'Du wurdest erfolgreich registriert. <a href="login.php">Zum Login</a>';
-            } else {
-                echo 'Beim Abspeichern ist leider ein Fehler aufgetreten<br>';
+            if($result){
+                $hasRegistered = true;
+            }else{
+                echo "Beim abspeichern ist ein Fehler aufgetreten.";
             }
         }
     }
@@ -81,4 +64,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 }
 ?>
+
+    <form id="reg-form" class=" flex flex-col px-10 w-full md:w-1/3 md:px-0" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
+        <label for="username">User-Name:</label>
+        <input class="mb-2 p-1" type="text" name="username" id="username" value="<?php echo $username;?>">
+        <label for="email">Email-Adresse: <span class="text-red-500">*</span></label>
+        <input class="mb-2 p-1" type="email" name="email" id="email" value="<?php echo $email;?>">
+        <label for="password">Passwort: <span class="text-red-500">*</span></label>
+        <input class="mb-2 p-1" type="password" name="password" id="password">
+        <label for="confirmpassword">Bestätige das Passwort: <span class="text-red-500">*</span></label>
+        <input class="mb-2 p-1" type="password" name="confirmpassword" id="confirmpassword">
+        <button class="mt-2 rounded border-2 border-black px-4 py-2 bg-yellow-600"type="submit" name="submit">Registrieren</button>
+    </form>
+    <a id="login-btn" class="mt-8 opacity-50 rounded border-2 border-black px-4 py-2 bg-yellow-400" href="login.php">zum Login</a>
+</main>
+
+<?php
+echo giveFooter();
+if($hasRegistered) {
+    echo '<script>
+alert("Du wurdest erfolgreich registriert.")
+document.getElementById("reg-form").innerHTML = "<p>Danke für die Registrierung. Du kannst dich jetzt einloggen:</p>";
+document.getElementById("login-btn").style.opacity = 1;
+</script>';
+}
+?>
+
+
+
+
 
