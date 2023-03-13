@@ -29,32 +29,7 @@ if ($db) {
     <h1 class='m-5 font-bold italic'>Kunden bearbeiten</h1>
     <p class='mb-5'>Wähle einen Kunden, den du bearbeiten oder löschen möchtest:</p>";
     if($clientsCount > 0){
-        echo giveClientsHeader();
-        echo "</div>";
-        foreach ($result as $clientRow){
-            echo "<div class='w-full py-4 px-8 flex flex-col md:grid grid-cols-12 place-items-start auto-rows-auto gap-4 items-center overflow-auto bg-white m-2'>";
-            $i = 0;
-            foreach ($clientRow as $item) {
-                $i++;
-                if($i == 3 || $i == 5){
-                    echo "<div class='col-span-2'><p>$item</p></div>";
-                }
-                else if($i == 4 ){
-                    echo "<div class='col-span-3'><p>$item</p></div>";
-                }
-                else{
-                    echo "<div><p>$item</p></div>";
-                }
-            }
-            echo "<div class='col-start-5 col-span-3 place-self-center py-5'>
-              <a class='hover:font-bold bg-yellow-500 p-2 rounded ' href='edit.php?id=".$clientRow['company_id']."'>Bearbeiten</a>
-              <a class='hover:font-bold bg-yellow-700 p-2 rounded' href='delete.php?id=".$clientRow['company_id']."'>Löschen</a>
-             </div>";
-
-            echo "</div>";
-            echo "<hr class='w-full md:hidden'>";
-        }
-        echo "</div>";
+        echo renderCostumers($result, true);
     }
     else{
         echo "<p class='text-red-500 mb-10'>Es gibt derzeit keine Kunden, die du selbst bearbeiten kannst.</p>";

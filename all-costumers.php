@@ -27,24 +27,7 @@ if ($db) {
     echo "
     <h1 class='m-5 font-bold italic'>Kundenübersicht</h1>
     <p>Es wurde(n) $clientsCount Kunde(n) gefunden:</p>";
-    echo giveClientsHeader();
-    foreach ($result as $clientRow){
-        $i = 0;
-        foreach ($clientRow as $item) {
-            $i++;
-            if($i == 3 || $i == 5){
-                echo "<div class='col-span-2'><p>$item</p></div>";
-            }
-            else if($i == 4 ){
-                echo "<div class='col-span-3'><p>$item</p></div>";
-            }
-            else{
-                echo "<div><p>$item</p></div>";
-            }
-        }
-        echo "<hr class='w-full md:hidden'>";
-    }
-    echo "</div>";
+    echo renderCostumers($result, false);
 }
 ?>
 </main>

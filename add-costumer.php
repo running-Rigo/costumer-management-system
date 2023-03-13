@@ -17,20 +17,20 @@ echo giveHeader("internal-menu.php",true);
     <main class="flex flex-col justify-evenly items-center w-screen">
 <?php
 $li1 = '<li class="hover:underline m-2"><a href="all-costumers.php">Kunden-Übersicht</a></li>';
-$li2 = ' <li class="hover:underline m-2"><a href="delete.php">Bestehende Kunden ändern/löschen</a></li>';
+$li2 = ' <li class="hover:underline m-2"><a href="change-costumer.php">Bestehende Kunden ändern/löschen</a></li>';
 echo giveInternalListMenu($li1,$li2);
 ?>
 <h1 id="form-header" class='m-5 font-bold italic'>Eingabe von Kundendaten:</h1>
 
 <?php
 //if form is submitted:
-if(isset($_POST['create']) && $_POST['create'] == 1) {
-//if($_SERVER["REQUEST_METHOD"] == "POST"){
+if($_SERVER["REQUEST_METHOD"] == "POST"){
     $error = false;
     $company_name = $_POST['company_name'];
     $contact_person = $_POST['contact_person'];
     $phone = $_POST['phone'];
     $address = $_POST['address'];
+    $add_date = date("Y-m-d");
     include "functions.php";
     $db = pdo_connect_mysql();
     if(strlen($company_name) == 0) {
@@ -44,21 +44,21 @@ if(isset($_POST['create']) && $_POST['create'] == 1) {
     //if no errors, costumer can be registered in database
     if(!$error) {
         $statement = $db->prepare("INSERT INTO clients VALUES (?,?,?,?,?,?,?,?)");
-        $result = $statement->execute(array("default",$company_name,$contact_person,$phone,$address,$user_id,"(select curdate())","default"));
-        $_POST = [];
-        var_dump($_POST);
-        if($result!=0){
-            $hasRegistered = true;
-        }else{
+        if($statement->execute(array("default",$company_name,$contact_person,$phone,$address,$user_id,$add_date,"default"))){
+            header("Location: http://localhost/costumer-management-system/success-message.php?action=new");
+        }
+        else{
             echo "Beim abspeichern ist ein Fehler aufgetreten.";
         }
+
     }
 }
+
 ?>
 
 <!---HTML-form--->
         <form id="costumer-form" class=" flex flex-col p-10 w-full md:w-1/3 md:px-0" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
-            <input type="hidden" name="create"  value="1">
+            <input type="hidden" name="create"  value="new">
             <label for="company_name">Firma:<span class="text-red-500">*</span></label>
             <input class="mb-2 p-1" type="text" name="company_name" id="company_name" value="<?php echo $company_name;?>">
 
@@ -76,11 +76,4 @@ if(isset($_POST['create']) && $_POST['create'] == 1) {
 </main>
 <?php
 echo giveFooter();
-if($hasRegistered) {
-echo '<script>
-    alert("Der Kunde wurde angelegt.")
-    document.getElementById("form-header").style.display = "none";
-    document.getElementById("costumer-form").innerHTML = "<p>Der Kunde ist nun in der Kunden-Übersicht einsehbar.</p>";
-</script>';
-}
 ?>

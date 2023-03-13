@@ -33,6 +33,11 @@ function giveHeader($link,$hasLogout){
 function giveFooter(){
     $footer = "
         <footer class='w-full h-16 xl:h-24 bg-gray-700 rounded-t-3xl'>
+        <nav class='flex h-full justify-evenly items-center text-yellow-400'>
+             <a class='underline hover:font-bold'>DSGVO</a>
+             <a class='underline hover:font-bold'>Impressium</a>
+             <a class='underline hover:font-bold'>FAQs / Hilfe</a>
+        </nav>
         </footer>
         </body>
         </html>
@@ -53,11 +58,11 @@ function giveInternalListMenu($li1,$li2){
 
 function giveClientsHeader(){
     return "
-    <div class='w-full py-4 px-8 flex flex-col md:grid grid-cols-12 auto-rows-auto gap-4 items-center overflow-auto bg-white m-2'>
+    <div class='gap-y-4 w-full py-4 px-8 flex flex-col md:grid grid-cols-12 auto-rows-auto gap-4 items-center overflow-auto bg-white m-2'>
         <div class='hidden md:inline font-semibold'>Kundennr.</div>
-        <div class='hidden md:inline font-semibold'>Name</div>
+        <div class='hidden md:inline col-span-2 font-semibold'>Name</div>
         <div class='hidden md:inline col-span-2 font-semibold'>Ansprechperson</div>
-        <div class='hidden md:inline col-span-3 font-semibold'>Telefonnr.</div>
+        <div class='hidden md:inline col-span-2 font-semibold'>Telefonnr.</div>
         <div class='hidden md:inline col-span-2 font-semibold'>Adresse</div>
         <div class='hidden md:inline font-semibold'>Erstellt von:</div>
         <div class='hidden md:inline font-semibold'>Erstellt am:</div>

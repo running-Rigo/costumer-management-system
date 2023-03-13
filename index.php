@@ -11,8 +11,8 @@ echo giveHeader("index.php",false);
         <h3 class="m-5 font-bold italic">Herzlich Willkommen!</h3>
         <p class="mb-2">Was möchtest du tun?</p>
         <div class="flex flex-col lg:flex-row">
-            <a href="registration.php" class="rounded border-2 border-black m-2 px-4 py-2 bg-yellow-600">Neu registrieren</a>
-            <a href="login.php" class="rounded border-2 border-black m-2 px-4 py-2 bg-yellow-400">Anmeldung</a>
+            <a href="registration.php" class="hover:font-bold rounded border-2 border-black m-2 px-4 py-2 bg-yellow-600">Neu registrieren</a>
+            <a href="login.php" class="hover:font-bold rounded border-2 border-black m-2 px-4 py-2 bg-yellow-400">Anmeldung</a>
         </div>
     </div>
 </main>

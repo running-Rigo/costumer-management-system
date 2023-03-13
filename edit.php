@@ -6,7 +6,6 @@ if (!isset($_SESSION['userid'])) {
 ?>
 
 <?php
-    $hasChanged = false;
     $user_id = $_SESSION['userid'];
     $user_name = $_SESSION['name'];
 if ($_SERVER["REQUEST_METHOD"] != "POST") {
@@ -27,7 +26,7 @@ else{
     <main id="main" class="flex flex-col justify-evenly items-center w-screen">
 <?php
 $li1 = '<li class="hover:underline m-2"><a href="all-costumers.php">Kunden-Übersicht</a></li>';
-$li2 = ' <li class="hover:underline m-2"><a href="add-costumer.php">Bestehende Kunde hinzufügen</a></li>';
+$li2 = ' <li class="hover:underline m-2"><a href="add-costumer.php">Neuen Kunden hinzufügen</a></li>';
 echo giveInternalListMenu($li1,$li2);
 ?>
 <h1 id="form-header" class='m-5 font-bold italic'>Änderung der Kundendaten:</h1>
@@ -35,6 +34,9 @@ echo giveInternalListMenu($li1,$li2);
         include "functions.php";
         //get values from selected costumer from db:
         $costumer = pdo_give_costumer_by_id($costumer_id);
+        if($costumer === null){
+            header("Location: http://localhost/costumer-management-system/internal-menu.php");
+        }
         $costumer_id = $costumer["company_id"];
         $company_name = $costumer['company_name'];
         $contact_person = $costumer['contact_person'];
@@ -62,17 +64,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //if no errors, update can be done in database:
     if(!$error) {
         $statement = $db->prepare("update clients set company_name = ?, contact_person = ?, phone = ?, address = ?, edited_at = ? where company_id = ? ");
-        $result = $statement->execute(array($company_name,$contact_person,$phone,$address,$change_date,$costumer_id));
-        if($result!=0){
-            $hasChanged = true;
-        }else{
+        if($statement->execute(array($company_name,$contact_person,$phone,$address,$change_date,$costumer_id))){
+            header("Location: http://localhost/costumer-management-system/success-message.php?action=change");
+        }
+        else{
             echo "Beim abspeichern ist ein Fehler aufgetreten.";
         }
+
     }
 }
 
 ?>
-
 
 <!---HTML-form--->
 <form id="change-form" class=" flex flex-col p-10 w-full md:w-1/3 md:px-0" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
@@ -95,13 +97,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php
 echo giveFooter();
-if($hasChanged) {
-    echo '<script>
-alert("Die Änderung wurde in die Datenbank übernommen.")
-document.getElementById("change-form").innerHTML = "Änderung gespeichert.";
-document.getElementById("form-header").style.display = "none";
-</script>';
-}
 ?>
 
 

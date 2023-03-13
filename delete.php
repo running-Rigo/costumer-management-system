@@ -42,7 +42,7 @@ if (!isset($_SESSION['userid'])) {
             echo "</div>";
         }
         else{
-            echo "Du hast keine Berechtigung auf diesen User zuzugreifen!";
+            header("Location: http://localhost/costumer-management-system/internal-menu.php");
         }
         ?>
 
