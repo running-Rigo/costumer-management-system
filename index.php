@@ -4,10 +4,10 @@ session_destroy();
 $_SESSION = array();
 include "structure.php";
 echo giveHead("Willkommen");
-echo giveHeader("index.php");
+echo giveHeader("index.php",false);
 ?>
 <main class="flex flex-col justify-center items-center w-screen h-full">
-    <div class="flex-col items-center flex w-full md:w-1/3 w-fit bg-white py-20 rounded-lg mt-5">
+    <div class="flex-col items-center flex w-full md:w-1/3 w-fit bg-white py-20 rounded-lg my-5">
         <h3 class="m-5 font-bold italic">Herzlich Willkommen!</h3>
         <p class="mb-2">Was möchtest du tun?</p>
         <div class="flex flex-col lg:flex-row">

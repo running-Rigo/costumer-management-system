@@ -4,7 +4,7 @@ session_start([
 ]);
 include "structure.php";
 echo giveHead("Login");
-echo giveHeader("index.php");
+echo giveHeader("index.php",false);
 ?>
 <main class="flex flex-col justify-center items-center w-screen h-full">
     <form class="flex flex-col" action="<?php echo $_SERVER['PHP_SELF'];?>" method="POST">

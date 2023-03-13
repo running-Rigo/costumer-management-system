@@ -8,9 +8,25 @@ function pdo_connect_mysql() {
     try {
         return new PDO('mysql:host=' . $DATABASE_HOST . ';dbname=' . $DATABASE_NAME . ';charset=utf8', $DATABASE_USER, $DATABASE_PASS);
     } catch (PDOException $exception) {
-        // If there is an error with the connection, stop the script and display the error.
         exit('Failed to connect to database!');
     }
+}
+
+function pdo_give_costumer_by_id($id){
+    $db = pdo_connect_mysql();
+    if ($db) {
+        $statement = $db->prepare("select * from clients where company_id = ?");
+        $statement->execute(array($id));
+        $costumer = $statement->fetch(PDO::FETCH_ASSOC);
+        if($costumer["created_by"] === $_SESSION['userid']){
+            return $costumer;
+        }
+        else{
+            return null;
+        }
+
+    }
+
 }
 
 ?>
